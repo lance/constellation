@@ -19,7 +19,9 @@
  */
 
 /**
- * A handle on a Cluster
+ * Represents a collection of all known channels in this process space
+ * @typedef {Array} Cluster
+ * @type {Cluster}
  */
 var Cluster = [];
 
@@ -28,7 +30,7 @@ var Cluster = [];
  * @param {String} name the Channel name
  * @param {Array} stack the Channel prototcol stack
  * @param {Object} options the Channel options
- * @returns {Object} the Channel
+ * @returns {Channel} the Channel
  */
 Cluster.createChannel = function(name, stack, options) {
   return (Cluster.find(function(c) {
@@ -44,8 +46,9 @@ Cluster.createChannel = function(name, stack, options) {
 /**
  * Get a list of channels in the cluster.
  * @param {Object} selector for filtering which channels are returned
- *        Example: var channels = coonstellation.channels({name:'alerts'});
  * @return {Array} the list of Channels matching the selctor
+ * @example 
+ * var channels = coonstellation.channels({name:'alerts'});
  */
 Cluster.channels = function(selector) {
   return this.filter(function(channel) {
@@ -54,7 +57,10 @@ Cluster.channels = function(selector) {
 };
 
 /**
- * @ignore
+ * Finds the first channel for which the `predicate` function returns true.
+ * @param {function} predicate called for each channel until it returns true.
+ * @return {Channel|undefined} the first Channel for which `predicate` returns 
+ * true or undefined if none do.
  */
 Cluster.find = function(predicate) {
   if (typeof predicate !== 'function') {
@@ -74,7 +80,10 @@ Cluster.find = function(predicate) {
   return undefined;
 };
 
-var Channel = require('./Channel');
+/**
+ * @ignore
+ */
+var Channel = require('./channel');
 
 module.exports = Cluster;
 

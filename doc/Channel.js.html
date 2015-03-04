@@ -71,21 +71,53 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <li class="active"><a href="index.html">Main</a></li>
-            <li><a href="Channel.js.html">Channel.js</a></li>
+            <li><a href="index.html">Main</a></li>
+            <li class="active"><a href="Channel.js.html">Channel.js</a></li>
             <li><a href="Cluster.js.html">Cluster.js</a></li>
             <li><a href="index.js.html">index.js</a></li>
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
+              <li><a href="#Channel"><i class="alert alert-info"></i><span>Channel</span></a>
+              </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <section id="Main"><h1>Clustered messaging bus inspired by JGroups</h1>
-<h2>Usage</h2>
-<p>This is experimental and under constant change. There is no point in a &quot;Usage&quot;<br />section until things stabilize a bit more. But if you&#39;re interested...</p><h2>How to Build</h2>
-<p>The project is built with <code>grunt</code>. Simply running <code>grunt</code> in the local<br />directory will execute the default task, including jshint, tests, and docs. To<br />run just the tests: <code>grunt mochaTest</code>. To check your source for lint, run<br /><code>grunt jshint</code>. To generate docs, run <code>grunt doxx</code>.</p></section>
+          <section id="Channel">
+            <h1>Channel</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>Channel()</span>
+            </p>
+          </section>
+          <div class="description"><p>Create a new Channel</p> </div>
+          <pre><code class="language-javascript">function Channel(name, stack, options) {
+  this.name = name;
+  this.stack = stack;
+  this.options = options;
+}
+
+Channel.prototype = [];
+
+Channel.prototype.connect = function(cluster) {
+  this.cluster = cluster;
+};
+
+Channel.prototype.matches = function(selector) {
+  return (!selector || (selector.name === this.name));
+};
+
+Channel.prototype.publish = function(message) {
+  this.map(function(listener) {
+    listener(message);
+  });
+  return this;
+};
+
+Channel.prototype.send = function(recipient, message) {
+  // TODO
+};</code></pre>
         </div>
       </div>
     </div>

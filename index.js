@@ -14,4 +14,8 @@
  * limitations under the License.
  */
 
-module.exports = require('./Cluster');
+/**
+ * @typedef {Array} Cluster
+ * @type {Cluster}
+ */
+module.exports = require('./cluster');

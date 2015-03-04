@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 var assert  = require('assert'),
-    Cluster = require('../Cluster.js'),
-    Channel = require('../Channel.js');
+    Cluster = require('../cluster.js'),
+    Channel = require('../channel.js');
 
 describe('Cluster', function() {
   it('should be able to create a Channel', function() {
@@ -38,5 +38,11 @@ describe('Cluster', function() {
     assert(list[0] === channel, 'Wrong channel returned');
     Cluster.createChannel('other-channel');
     assert(Cluster.channels().length === 2, 'Wrong number of channels returned');
+  });
+
+  it('should find channels based on a predicate', function() {
+    var tacos = Cluster.createChannel('tacos'),
+        enchiladas = Cluster.createChannel('enchiladas');
+    assert(Cluster.find(function(c) { return c.name === 'tacos'; }) === tacos);
   });
 });

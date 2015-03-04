@@ -71,21 +71,159 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <li class="active"><a href="index.html">Main</a></li>
+            <li><a href="index.html">Main</a></li>
             <li><a href="Channel.js.html">Channel.js</a></li>
-            <li><a href="Cluster.js.html">Cluster.js</a></li>
+            <li class="active"><a href="Cluster.js.html">Cluster.js</a></li>
             <li><a href="index.js.html">index.js</a></li>
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
+              <li><a href="#Cluster"><i class="alert alert-success"></i><span>Cluster</span></a>
+              </li>
+              <li><a href="#createChannel"><i class="alert alert-info"></i><span>createChannel</span></a>
+              </li>
+              <li><a href="#channels"><i class="alert alert-info"></i><span>channels</span></a>
+              </li>
+              <li><a href="#find"><i class="alert alert-info"></i><span>find</span></a>
+              </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <section id="Main"><h1>Clustered messaging bus inspired by JGroups</h1>
-<h2>Usage</h2>
-<p>This is experimental and under constant change. There is no point in a &quot;Usage&quot;<br />section until things stabilize a bit more. But if you&#39;re interested...</p><h2>How to Build</h2>
-<p>The project is built with <code>grunt</code>. Simply running <code>grunt</code> in the local<br />directory will execute the default task, including jshint, tests, and docs. To<br />run just the tests: <code>grunt mochaTest</code>. To check your source for lint, run<br /><code>grunt jshint</code>. To generate docs, run <code>grunt doxx</code>.</p></section>
+          <div class="description"><p>An event bus for Node.js</p> </div>
+          <section id="Cluster">
+            <h1>Cluster</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">declaration</div><span>Cluster</span>
+            </p>
+          </section>
+          <div class="description"><p>Represents a collection of all known channels in this process space</p> </div>
+          <pre><code class="language-javascript">var Cluster = [];</code></pre>
+          <section id="createChannel">
+            <h1>createChannel</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Cluster.createChannel()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>String</td>
+                <td><p>the Channel name</p></td>
+              </tr>
+              <tr>
+                <td>stack</td>
+                <td>Array</td>
+                <td><p>the Channel prototcol stack</p></td>
+              </tr>
+              <tr>
+                <td>options</td>
+                <td>Object</td>
+                <td><p>the Channel options</p></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Create a channel in this cluster</p> </div>
+          <pre><code class="language-javascript">Cluster.createChannel = function(name, stack, options) {
+  return (Cluster.find(function(c) {
+    if (c.name === name) return c;
+    return null;
+    }) || (function() {
+      var channel = new Channel(name, stack, options);
+      Cluster.push(channel);
+      return channel;
+    })());
+};</code></pre>
+          <section id="channels">
+            <h1>channels</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Cluster.channels()</span> -><span>Array</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>selector</td>
+                <td>Object</td>
+                <td><p>for filtering which channels are returned</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Array</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Get a list of channels in the cluster.</p> </div>
+          <pre><code class="language-javascript">Cluster.channels = function(selector) {
+  return this.filter(function(channel) {
+    return channel.matches(selector);
+  });
+};</code></pre>
+          <section id="find">
+            <h1>find</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Cluster.find()</span> -><span>Channel</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>predicate</td>
+                <td>function</td>
+                <td><p>called for each channel until it returns true.</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Channel</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Finds the first channel for which the <code>predicate</code> function returns true.</p> </div>
+          <pre><code class="language-javascript">Cluster.find = function(predicate) {
+  if (typeof predicate !== 'function') {
+    throw new TypeError('predicate must be a function');
+  }
+  var list = Object(this);
+  var length = list.length &gt;&gt;&gt; 0;
+  var thisArg = arguments[1];
+  var value;
+
+  for (var i = 0; i &lt; length; i++) {
+    value = list[i];
+    if (predicate.call(thisArg, value, i, list)) {
+      return value;
+    }
+  }
+  return undefined;
+};</code></pre>
         </div>
       </div>
     </div>
