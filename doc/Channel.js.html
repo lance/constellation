@@ -72,13 +72,19 @@
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
             <li><a href="index.html">Main</a></li>
-            <li class="active"><a href="Channel.js.html">Channel.js</a></li>
-            <li><a href="Cluster.js.html">Cluster.js</a></li>
+            <li class="active"><a href="channel.js.html">channel.js</a></li>
+            <li><a href="cluster.js.html">cluster.js</a></li>
             <li><a href="index.js.html">index.js</a></li>
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
               <li><a href="#Channel"><i class="alert alert-info"></i><span>Channel</span></a>
+              </li>
+              <li><a href="#connect"><i class="alert alert-info"></i><span>connect</span></a>
+              </li>
+              <li><a href="#matches"><i class="alert alert-info"></i><span>matches</span></a>
+              </li>
+              <li><a href="#publish"><i class="alert alert-info"></i><span>publish</span></a>
               </li>
             </ul>
           </div>
@@ -93,25 +99,102 @@
           </section>
           <div class="description"><p>Create a new Channel</p> </div>
           <pre><code class="language-javascript">function Channel(name, stack, options) {
+  if (!(this instanceof Channel)) return new Channel(name, stack, options);
   this.name = name;
   this.stack = stack;
   this.options = options;
-}
-
-Channel.prototype = [];
-
-Channel.prototype.connect = function(cluster) {
+}</code></pre>
+          <section id="connect">
+            <h1>connect</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.connect()</span> -><span>Channel</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cluster</td>
+                <td>string</td>
+                <td><p>The cluster name to connect to.</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Channel</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Connect this Channel to a {Cluster}. Uses the protocol<br />stack which was used to create this Channel to connect<br />with other Channels with the same name in this cluster.</p> </div>
+          <pre><code class="language-javascript">Channel.prototype.connect = function(cluster) {
   this.cluster = cluster;
-};
-
-Channel.prototype.matches = function(selector) {
+  return this;
+};</code></pre>
+          <section id="matches">
+            <h1>matches</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.matches()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>selector</td>
+                <td>object</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Returns true if <code>selector.name === this.name</code>.<br />Ultimately this should be a more sophisticated matching<br />system that allows selector to specify alternate properties<br />such as protocol and other options.</p> </div>
+          <pre><code class="language-javascript">Channel.prototype.matches = function(selector) {
   return (!selector || (selector.name === this.name));
-};
-
-Channel.prototype.publish = function(message) {
-  this.map(function(listener) {
-    listener(message);
-  });
+};</code></pre>
+          <section id="publish">
+            <h1>publish</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.publish()</span> -><span>Channel</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>message</td>
+                <td>string</td>
+                <td><p>the message to send</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Channel</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Publishes a message to all Channel subscribers. </p> </div>
+          <pre><code class="language-javascript">Channel.prototype.publish = function(message) {
+  this.emit('message');
   return this;
 };
 

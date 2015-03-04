@@ -26,6 +26,16 @@ function Channel(name, stack, options) {
 }
 
 /**
+ * @ignore
+ */
+
+var EE = require('events').EventEmitter,
+    util = require('util');
+
+util.inherits(Channel, EE);
+
+module.exports = Channel;
+/**
  * Connect this Channel to a {Cluster}. Uses the protocol
  * stack which was used to create this Channel to connect
  * with other Channels with the same name in this cluster.
@@ -64,13 +74,3 @@ Channel.prototype.send = function(recipient, message) {
   // TODO
 };
 
-/**
- * @ignore
- */
-
-var EE = require('events').EventEmitter,
-    util = require('util');
-
-util.inherits(Channel, EE);
-
-module.exports = Channel;
