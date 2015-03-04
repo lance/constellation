@@ -72,134 +72,75 @@
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
             <li><a href="index.html">Main</a></li>
-            <li class="active"><a href="channel.js.html">channel.js</a></li>
+            <li><a href="channel.js.html">channel.js</a></li>
             <li><a href="cluster.js.html">cluster.js</a></li>
+            <li><a href="demo.js.html">demo.js</a></li>
+            <li><a href="event.js.html">event.js</a></li>
             <li><a href="index.js.html">index.js</a></li>
+            <li><a href="message.js.html">message.js</a></li>
+            <li><a href="ping.js.html">ping.js</a></li>
+            <li><a href="protocol-stack.js.html">protocol-stack.js</a></li>
+            <li class="active"><a href="protocol.js.html">protocol.js</a></li>
+            <li><a href="udp.js.html">udp.js</a></li>
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
-              <li><a href="#Channel"><i class="alert alert-info"></i><span>Channel</span></a>
-              </li>
-              <li><a href="#connect"><i class="alert alert-info"></i><span>connect</span></a>
-              </li>
-              <li><a href="#matches"><i class="alert alert-info"></i><span>matches</span></a>
-              </li>
-              <li><a href="#publish"><i class="alert alert-info"></i><span>publish</span></a>
+              <li><a href="#exports"><i class="alert alert-success"></i><span>exports</span></a>
               </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <section id="Channel">
-            <h1>Channel</h1>
+          <section id="exports">
+            <h1>exports</h1>
             <h5 class="subheader"></h5>
             <p>
-              <div class="label label-info radius ctx-type">function</div><span>Channel()</span>
+              <div class="label label-success radius ctx-type">property</div><span>module.exports</span>
             </p>
           </section>
-          <div class="description"><p>Create a new Channel</p> </div>
-          <pre><code class="language-javascript">function Channel(name, stack, options) {
-  if (!(this instanceof Channel)) return new Channel(name, stack, options);
-  this.name = name;
-  this.stack = stack;
-  this.options = options;
-}</code></pre>
-          <section id="connect">
-            <h1>connect</h1>
-            <h5 class="subheader"></h5>
-            <p>
-              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.connect()</span> -><span>Channel</span>
-            </p>
-          </section>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style="width:20%">Option name</th>
-                <th style="width:20%">Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>cluster</td>
-                <td>string</td>
-                <td><p>The cluster name to connect to.</p></td>
-              </tr>
-              <tr>
-                <td>return</td>
-                <td>Channel</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="description"><p>Connect this Channel to a {Cluster}. Uses the protocol<br />stack which was used to create this Channel to connect<br />with other Channels with the same name in this cluster.</p> </div>
-          <pre><code class="language-javascript">Channel.prototype.connect = function(cluster) {
-  this.cluster = cluster;
-  return this;
-};</code></pre>
-          <section id="matches">
-            <h1>matches</h1>
-            <h5 class="subheader"></h5>
-            <p>
-              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.matches()</span>
-            </p>
-          </section>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style="width:20%">Option name</th>
-                <th style="width:20%">Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>selector</td>
-                <td>object</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="description"><p>Returns true if <code>selector.name === this.name</code>.<br />Ultimately this should be a more sophisticated matching<br />system that allows selector to specify alternate properties<br />such as protocol and other options.</p> </div>
-          <pre><code class="language-javascript">Channel.prototype.matches = function(selector) {
-  return (!selector || (selector.name === this.name));
-};</code></pre>
-          <section id="publish">
-            <h1>publish</h1>
-            <h5 class="subheader"></h5>
-            <p>
-              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.publish()</span> -><span>Channel</span>
-            </p>
-          </section>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style="width:20%">Option name</th>
-                <th style="width:20%">Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>message</td>
-                <td>string</td>
-                <td><p>the message to send</p></td>
-              </tr>
-              <tr>
-                <td>return</td>
-                <td>Channel</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="description"><p>Publishes a message to all Channel subscribers. </p> </div>
-          <pre><code class="language-javascript">Channel.prototype.publish = function(message) {
-  this.emit('message');
-  return this;
+          <div class="description"> </div>
+          <pre><code class="language-javascript">module.exports = Protocol;
+
+function Protocol() {
+}
+
+Protocol.prototype.getProtocolStack = function() {
+  return this.stack;
 };
 
-Channel.prototype.send = function(recipient, message) {
-  // TODO
+Protocol.prototype.setProtocolStack = function(stack) {
+  this.stack = stack;
+};
+
+Protocol.prototype.getUpProtocol = function() {
+  return this.upProtocol;
+};
+
+Protocol.prototype.setUpProtocol = function(upProtocol) {
+  this.upProtocol = upProtocol;
+};
+
+Protocol.prototype.getDownProtocol = function() {
+  return this.downProtocol;
+};
+
+Protocol.prototype.setDownProtocol = function(downProtocol) {
+  this.downProtocol = downProtocol;
+};
+
+Protocol.prototype.init = function() {
+};
+
+Protocol.prototype.up = function(event) {
+  this.upProtocol.up(event);
+};
+
+Protocol.prototype.down = function(event) {
+  this.downProtocol.down(event);
+};
+
+Protocol.prototype.toString = function() {
+  return this.constructor.name;
 };</code></pre>
         </div>
       </div>

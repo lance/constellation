@@ -71,8 +71,8 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <li class="active"><a href="index.html">Main</a></li>
-            <li><a href="channel.js.html">channel.js</a></li>
+            <li><a href="index.html">Main</a></li>
+            <li class="active"><a href="channel.js.html">channel.js</a></li>
             <li><a href="cluster.js.html">cluster.js</a></li>
             <li><a href="demo.js.html">demo.js</a></li>
             <li><a href="event.js.html">event.js</a></li>
@@ -85,14 +85,267 @@
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
+              <li><a href="#Channel"><i class="alert alert-info"></i><span>Channel</span></a>
+              </li>
+              <li><a href="#connect"><i class="alert alert-info"></i><span>connect</span></a>
+              </li>
+              <li><a href="#matches"><i class="alert alert-info"></i><span>matches</span></a>
+              </li>
+              <li><a href="#publish"><i class="alert alert-info"></i><span>publish</span></a>
+              </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <section id="Main"><h1>Clustered messaging bus inspired by JGroups</h1>
-<h2>Usage</h2>
-<p>This is experimental and under constant change. There is no point in a &quot;Usage&quot;<br />section until things stabilize a bit more. But if you&#39;re interested...</p><h2>How to Build</h2>
-<p>The project is built with <code>grunt</code>. Simply running <code>grunt</code> in the local<br />directory will execute the default task, including jshint, tests, and docs. To<br />run just the tests: <code>grunt mochaTest</code>. To check your source for lint, run<br /><code>grunt jshint</code>. To generate docs, run <code>grunt doxx</code>.</p></section>
+          <section id="Channel">
+            <h1>Channel</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>Channel()</span>
+            </p>
+          </section>
+          <div class="description"><p>Create a new Channel</p> </div>
+          <pre><code class="language-javascript">function Channel(name, stackConfig, options) {
+  if (!(this instanceof Channel)) return new Channel(name, stackConfig, options);
+  this.name = name;
+  this.stack = new ProtocolStack(stackConfig);
+  this.options = options;
+
+  this.stack.init();
+  this.stack.setChannel(this);
+}</code></pre>
+          <section id="connect">
+            <h1>connect</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.connect()</span> -><span>Channel</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cluster</td>
+                <td>string</td>
+                <td><p>The cluster name to connect to.</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Channel</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Connect this Channel to a {Cluster}. Uses the protocol<br />stack which was used to create this Channel to connect<br />with other Channels with the same name in this cluster.</p> </div>
+          <pre><code class="language-javascript">Channel.prototype.connect = function(cluster) {
+  this.cluster = cluster;
+  if (!this.preConnect(cluster)) {
+    return this;
+  }
+  if (cluster) {
+    var connectEvent = new Event(Event.CONNECT, cluster);
+    this._connect(connectEvent);
+  }
+  this.state = State.CONNECTED;
+  // TODO: notifyChannelConnected
+  return this;
+};</code></pre>
+          <section id="matches">
+            <h1>matches</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.matches()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>selector</td>
+                <td>object</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Returns true if <code>selector.name === this.name</code>.<br />Ultimately this should be a more sophisticated matching<br />system that allows selector to specify alternate properties<br />such as protocol and other options.</p> </div>
+          <pre><code class="language-javascript">Channel.prototype.matches = function(selector) {
+  return (!selector || (selector.name === this.name));
+};</code></pre>
+          <section id="publish">
+            <h1>publish</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Channel.prototype.publish()</span> -><span>Channel</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>message</td>
+                <td>string</td>
+                <td><p>the message to send</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Channel</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Publishes a message to all Channel subscribers. </p> </div>
+          <pre><code class="language-javascript">Channel.prototype.publish = function(message) {
+  this.send(null, message);
+  return this;
+};
+
+Channel.prototype.send = function(recipient, data) {
+  this.checkClosedOrNotConnected();
+  // TODO: handle non-string message payloads
+  var message = new Message(recipient, data.toString());
+  this.down(new Event(Event.MSG, message));
+};
+
+Channel.prototype.preConnect = function(cluster) {
+  if (this.state === State.CONNECTED) {
+    return false;
+  }
+  this.checkClosed();
+  this.setAddress();
+  var oldState = this.state;
+  this.state = State.CONNECTING;
+  try {
+    this.startStack(cluster);
+  } catch (e) {
+    this.state = oldState;
+    throw e;
+  }
+  return true;
+};
+
+Channel.prototype._connect = function(connectEvent) {
+  try {
+    this.down(connectEvent);
+  } catch (e) {
+    this.stopStack(true, false);
+    this.state = State.OPEN;
+    this.init();
+    // TODO: channel name in exception
+    throw('connecting to channel failed', e);
+  }
+};
+
+Channel.prototype.up = function(event) {
+  return this.invokeCallback(event.getType(), event.getArg());
+};
+
+Channel.prototype.down = function(event) {
+  if (!event) {
+    return null;
+  }
+  return this.stack.down(event);
+};
+
+Channel.prototype.invokeCallback = function(type, arg) {
+  switch(type) {
+    case Event.MSG:
+      this.emit('message', arg);
+      break;
+    case Event.VIEW_CHANGE:
+      this.emit('viewAccepted', arg);
+      break;
+    // TODO: other event types
+  }
+};
+
+Channel.prototype.checkClosed = function() {
+  if (this.state === State.CLOSED) {
+    // TODO: exception object?
+    throw 'channel is closed';
+  }
+};
+
+Channel.prototype.checkClosedOrNotConnected = function() {
+  if (this.state === State.CLOSED) {
+    // TODO: exception object?
+    throw 'channel is closed';
+  }
+  if (!(this.state === State.CONNECTING || this.state === State.CONNECTED)) {
+    // TODO: exception object?
+    throw 'channel is disconnected';
+  }
+};
+
+Channel.prototype.setAddress = function() {
+  var oldAddress = this.localAddress;
+  this.localAddress = this.generateAddress();
+  if (oldAddress) {
+    this.down(new Event(Event.REMOVE_ADDRESS, oldAddress));
+  }
+  // TODO: rest of setAddress
+};
+
+Channel.prototype.generateAddress = function() {
+  // TODO: configurable address generators?
+  return uuid.v4();
+};
+
+Channel.prototype.init = function() {
+  // TODO: REMOVE_ADDRESS event
+  this.localAddress = null;
+  this.cluster = null;
+  this.myView = null;
+};
+
+Channel.prototype.startStack = function(cluster) {
+  this.checkClosed();
+  // TODO: unicast clusterName check
+  this.cluster = cluster;
+  // TODO: socket factory?
+  this.stack.startStack(cluster, this.localAddress);
+
+  // TODO: temporary view
+};
+
+Channel.prototype.stopStack = function(stop, destroy) {
+  if (this.stack) {
+    try {
+      if (stop) {
+        this.stack.stopStack(this.cluster);
+      }
+      if (destroy) {
+        this.stack.destroy();
+      }
+    } catch (e) {
+      console.error('StackDestroyFailure ' + e);
+    }
+  }
+};
+
+var State = {
+  OPEN: 'open',
+  CONNECTING: 'connecting',
+  CONNECTED: 'connected',
+  CLOSED: 'closed'
+};</code></pre>
         </div>
       </div>
     </div>

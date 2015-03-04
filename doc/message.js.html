@@ -71,13 +71,13 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <li class="active"><a href="index.html">Main</a></li>
+            <li><a href="index.html">Main</a></li>
             <li><a href="channel.js.html">channel.js</a></li>
             <li><a href="cluster.js.html">cluster.js</a></li>
             <li><a href="demo.js.html">demo.js</a></li>
             <li><a href="event.js.html">event.js</a></li>
             <li><a href="index.js.html">index.js</a></li>
-            <li><a href="message.js.html">message.js</a></li>
+            <li class="active"><a href="message.js.html">message.js</a></li>
             <li><a href="ping.js.html">ping.js</a></li>
             <li><a href="protocol-stack.js.html">protocol-stack.js</a></li>
             <li><a href="protocol.js.html">protocol.js</a></li>
@@ -85,14 +85,35 @@
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
+              <li><a href="#exports"><i class="alert alert-success"></i><span>exports</span></a>
+              </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <section id="Main"><h1>Clustered messaging bus inspired by JGroups</h1>
-<h2>Usage</h2>
-<p>This is experimental and under constant change. There is no point in a &quot;Usage&quot;<br />section until things stabilize a bit more. But if you&#39;re interested...</p><h2>How to Build</h2>
-<p>The project is built with <code>grunt</code>. Simply running <code>grunt</code> in the local<br />directory will execute the default task, including jshint, tests, and docs. To<br />run just the tests: <code>grunt mochaTest</code>. To check your source for lint, run<br /><code>grunt jshint</code>. To generate docs, run <code>grunt doxx</code>.</p></section>
+          <section id="exports">
+            <h1>exports</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>module.exports</span>
+            </p>
+          </section>
+          <div class="description"> </div>
+          <pre><code class="language-javascript">module.exports = Message;
+
+function Message(destination, data) {
+  this.destination = destination;
+  this.data = data;
+}
+
+
+Message.prototype.getDestination = function() {
+  return this.destination;
+};
+
+Message.prototype.getSource = function() {
+  return this.source;
+};</code></pre>
         </div>
       </div>
     </div>

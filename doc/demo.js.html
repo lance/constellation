@@ -71,10 +71,10 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <li class="active"><a href="index.html">Main</a></li>
+            <li><a href="index.html">Main</a></li>
             <li><a href="channel.js.html">channel.js</a></li>
             <li><a href="cluster.js.html">cluster.js</a></li>
-            <li><a href="demo.js.html">demo.js</a></li>
+            <li class="active"><a href="demo.js.html">demo.js</a></li>
             <li><a href="event.js.html">event.js</a></li>
             <li><a href="index.js.html">index.js</a></li>
             <li><a href="message.js.html">message.js</a></li>
@@ -85,14 +85,47 @@
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
+              <li><a href="#Cluster"><i class="alert alert-success"></i><span>Cluster</span></a>
+              </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <section id="Main"><h1>Clustered messaging bus inspired by JGroups</h1>
-<h2>Usage</h2>
-<p>This is experimental and under constant change. There is no point in a &quot;Usage&quot;<br />section until things stabilize a bit more. But if you&#39;re interested...</p><h2>How to Build</h2>
-<p>The project is built with <code>grunt</code>. Simply running <code>grunt</code> in the local<br />directory will execute the default task, including jshint, tests, and docs. To<br />run just the tests: <code>grunt mochaTest</code>. To check your source for lint, run<br /><code>grunt jshint</code>. To generate docs, run <code>grunt doxx</code>.</p></section>
+          <section id="Cluster">
+            <h1>Cluster</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">declaration</div><span>Cluster</span>
+            </p>
+          </section>
+          <div class="description"> </div>
+          <pre><code class="language-javascript">var Cluster = require('./cluster');
+var channel = Cluster.createChannel('MyChannel', ['udp']);
+
+channel.on('viewAccepted', function(view) {
+  console.log('new view: ' + view);
+});
+channel.on('message', function(message) {
+  console.log('received message: ' + message.data);
+  messagePrompt();
+});
+
+channel.connect('ChatCluster');
+
+function messagePrompt() {
+  console.log('Enter a message to send to all nodes: ');
+}
+
+messagePrompt();
+
+process.stdin.on('readable', function() {
+  var data = process.stdin.read();
+  if (data !== null) {
+    channel.publish(data);
+  }
+});
+// console.log('Enter a message to send to all nodes: ');
+// process.stdin.once('readable', readMessage);</code></pre>
         </div>
       </div>
     </div>

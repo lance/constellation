@@ -23,7 +23,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      all: ['Gruntfile.js', 'index.js', 'test/**/*.js']
+      all: ['*.js', 'test/**/*.js']
     },
     'gh-pages': {
       options: {
