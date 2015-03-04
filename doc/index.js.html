@@ -72,99 +72,16 @@
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
             <li><a href="index.html">Main</a></li>
+            <li><a href="Channel.js.html">Channel.js</a></li>
+            <li><a href="Cluster.js.html">Cluster.js</a></li>
             <li class="active"><a href="index.js.html">index.js</a></li>
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
-              <li><a href="#Constellation"><i class="alert alert-info"></i><span>Constellation</span></a>
-              </li>
-              <li><a href="#createChannel"><i class="alert alert-info"></i><span>createChannel</span></a>
-              </li>
-              <li><a href="#channels"><i class="alert alert-info"></i><span>channels</span></a>
-              </li>
             </ul>
           </div>
         </div>
         <div class="span9">
-          <div class="description"><p>An event bus for Node.js</p> </div>
-          <section id="Constellation">
-            <h1>Constellation</h1>
-            <h5 class="subheader"></h5>
-            <p>
-              <div class="label label-info radius ctx-type">function</div><span>Constellation()</span>
-            </p>
-          </section>
-          <div class="description"><p>Create or join a cluster</p> </div>
-          <pre><code class="language-javascript">var Constellation = function(name, options) {
-};</code></pre>
-          <section id="createChannel">
-            <h1>createChannel</h1>
-            <h5 class="subheader"></h5>
-            <p>
-              <div class="label label-info radius ctx-type">method</div><span>Constellation.prototype.createChannel()</span>
-            </p>
-          </section>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style="width:20%">Option name</th>
-                <th style="width:20%">Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>name</td>
-                <td>String</td>
-                <td><p>the Channel name</p></td>
-              </tr>
-              <tr>
-                <td>stack</td>
-                <td>Array</td>
-                <td><p>the Channel prototcol stack</p></td>
-              </tr>
-              <tr>
-                <td>options</td>
-                <td>Object</td>
-                <td><p>the Channel options</p></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="description"><p>Create a channel in this cluster</p> </div>
-          <pre><code class="language-javascript">Constellation.prototype.createChannel = function(name, stack, options) {
-  // TODO: What options can be provided?
-};</code></pre>
-          <section id="channels">
-            <h1>channels</h1>
-            <h5 class="subheader"></h5>
-            <p>
-              <div class="label label-info radius ctx-type">method</div><span>Constellation.prototype.channels()</span> -><span>Array</span>
-            </p>
-          </section>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style="width:20%">Option name</th>
-                <th style="width:20%">Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>selector</td>
-                <td>Object</td>
-                <td><p>for filtering which channels are returned        Example: var channels = coonstellation.channels({name:&#39;alerts&#39;});</p></td>
-              </tr>
-              <tr>
-                <td>return</td>
-                <td>Array</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="description"><p>Get a list of channels in the cluster.</p> </div>
-          <pre><code class="language-javascript">Constellation.prototype.channels = function(selector) {
-};</code></pre>
         </div>
       </div>
     </div>
