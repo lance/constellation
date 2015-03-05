@@ -18,4 +18,10 @@
  * @typedef {Array} Cluster
  * @type {Cluster}
  */
-module.exports = require('./cluster');
+module.exports.Cluster = require('./lib/cluster');
+
+/**
+ * @typedef {Array} Channel
+ * @type {Channel}
+ */
+module.exports.Channel = require('./lib/channel');

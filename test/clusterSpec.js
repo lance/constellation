@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 var assert  = require('assert'),
-    Cluster = require('../cluster.js'),
-    Channel = require('../channel.js');
+    Cluster = require('../lib/cluster'),
+    Channel = require('../lib/channel');
 
 describe('Cluster', function() {
   it('should be able to create a Channel', function() {
