@@ -75,9 +75,9 @@ Channel.prototype.connect = function(cluster, callback) {
         deferred.resolve(this);
       }
     } catch(e) {
-      deffered.reject(e);
+      deferred.reject(e);
     }
-  });
+  }.bind(this));
   return deferred.promise.nodeify(callback);
 };
 
