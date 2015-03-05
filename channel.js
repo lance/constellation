@@ -38,31 +38,47 @@ function Channel(name, stackConfig, options) {
  * @ignore
  */
 
-var EE = require('events').EventEmitter,
-    util = require('util');
+var EE   = require('events').EventEmitter,
+    util = require('util'),
+    Q    = require('q');
 
 util.inherits(Channel, EE);
 
 module.exports = Channel;
+
 /**
  * Connect this Channel to a {Cluster}. Uses the protocol
  * stack which was used to create this Channel to connect
  * with other Channels with the same name in this cluster.
  * @param {string} cluster The cluster name to connect to.
+ * @param {function} callback Function to call when connect completes.
  * @return {Channel} this
  */
-Channel.prototype.connect = function(cluster) {
-  this.cluster = cluster;
-  if (!this.preConnect(cluster)) {
-    return this;
-  }
-  if (cluster) {
-    var connectEvent = new Event(Event.CONNECT, cluster);
-    this._connect(connectEvent);
-  }
-  this.state = State.CONNECTED;
-  // TODO: notifyChannelConnected
-  return this;
+Channel.prototype.connect = function(cluster, callback) {
+  // our promise handles invoking the callback
+  var deferred = Q.defer();
+
+  // connecting blocks, so run on the next tick and the
+  // caller with the promise when complete.
+  process.nextTick(function() {
+    this.cluster = cluster;
+    try {
+      if (!this.preConnect(cluster)) {
+        deferred.resolve(this);
+      } else {
+        if (cluster) {
+          var connectEvent = new Event(Event.CONNECT, cluster);
+          this._connect(connectEvent);
+        }
+        this.state = State.CONNECTED;
+        this.emit('connected');
+        deferred.resolve(this);
+      }
+    } catch(e) {
+      deffered.reject(e);
+    }
+  });
+  return deferred.promise.nodeify(callback);
 };
 
 

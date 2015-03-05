@@ -19,6 +19,7 @@
     "README.md"
   ],
   "dependencies": {
+    "q": "^1.1.2",
     "node-uuid": "^1.4.2"
   },
   "devDependencies": {
