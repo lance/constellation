@@ -1,4 +1,4 @@
-var Cluster = require('./cluster');
+var Cluster = require('./lib/cluster');
 var channel = Cluster.createChannel('MyChannel', ['udp']);
 
 channel.connect('ChatCluster', function(e, ch) {
