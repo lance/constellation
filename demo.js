@@ -1,5 +1,5 @@
 var Cluster = require('./lib/cluster');
-var channel = Cluster.createChannel('MyChannel', ['udp']);
+var channel = Cluster.createChannel('MyChannel');
 
 channel.connect('ChatCluster', function(e, ch) {
 
@@ -7,12 +7,8 @@ channel.connect('ChatCluster', function(e, ch) {
     return console.error("Cannot connect: " + e);
   }
 
-  ch.on('viewAccepted', function(view) {
-    console.log('new view: ' + view);
-  });
-
   ch.on('message', function(message) {
-    console.log('received message: ' + message.data);
+    console.log('received message: ' + message);
     messagePrompt();
   });
 
