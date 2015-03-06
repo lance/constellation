@@ -40,9 +40,4 @@ describe('Cluster', function() {
     assert(Cluster.channels().length === 2, 'Wrong number of channels returned');
   });
 
-  it('should find channels based on a predicate', function() {
-    var tacos = Cluster.createChannel('tacos'),
-        enchiladas = Cluster.createChannel('enchiladas');
-    assert(Cluster.find(function(c) { return c.name === 'tacos'; }) === tacos);
-  });
 });

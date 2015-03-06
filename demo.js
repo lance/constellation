@@ -1,29 +1,36 @@
 var Cluster = require('./lib/cluster');
-var channel = Cluster.createChannel('MyChannel');
+var readline = require('readline');
 
-channel.connect('ChatCluster', function(e, ch) {
-
-  if (e) { 
-    return console.error("Cannot connect: " + e);
-  }
-
-  ch.on('message', function(message) {
-    console.log('received message: ' + message);
-    messagePrompt();
-  });
-
-
-  messagePrompt();
-
-  process.stdin.on('readable', function() {
-    var data = process.stdin.read();
-    if (data !== null) {
-      channel.publish(data);
-    }
-  });
-
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 });
 
-function messagePrompt() {
-  console.log('Enter a message to send to all nodes: ');
+rl.question('What cluster would you like to join? ', function(name) {
+  var channel = Cluster.createChannel(name);
+  channel.connect().then(connectHandler, errorHandler);
+});
+
+function connectHandler(channel) {
+  var cluster = channel.cluster;
+  console.log("Connected to " + cluster);
+
+  channel.on('message', function(message) {
+    console.log('received message: ' + message);
+  });
+
+  function prompt() {
+    var p = 'Enter a message for all nodes on ' + cluster + ': ';
+    rl.question(p, function(answer) {
+      if (answer) channel.publish(answer);
+      prompt();
+    });
+  }
+
+  prompt();
 }
+
+function errorHandler(reason) {
+  console.error(reason);
+}
+
