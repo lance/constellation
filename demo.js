@@ -19,6 +19,10 @@ function connectHandler(channel) {
     console.log('received message: ' + message);
   });
 
+  channel.on('viewChanged', function(members) {
+    console.log('cluster members are: ' + members);
+  });
+
   function prompt() {
     var p = 'Enter a message for all nodes on ' + cluster + ': ';
     rl.question(p, function(answer) {
