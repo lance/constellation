@@ -11,16 +11,25 @@ rl.question('What cluster would you like to join? ', function(name) {
   channel.connect().then(connectHandler, errorHandler);
 });
 
+rl.on('SIGINT', function() {
+  rl.close();
+  console.log('\nGoodbye');
+  process.exit();
+});
+
+
 function connectHandler(channel) {
   var cluster = channel.cluster;
   console.log("Connected to " + cluster);
 
   channel.on('message', function(message) {
-    console.log('received message: ' + message);
+    console.log('\nreceived message: ' + message);
+    prompt();
   });
 
   channel.on('viewChanged', function(members) {
-    console.log('cluster members are: ' + members);
+    console.log('\ncluster members are: ' + members);
+    prompt();
   });
 
   function prompt() {
