@@ -1,7 +1,7 @@
 {
-  "name": "occurrence-tube",
+  "name": "aquilla",
   "version": "0.1.0",
-  "description": "A Node.js event bus",
+  "description": "A Node.js clustering thing",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "build": "grunt"
