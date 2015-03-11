@@ -40,6 +40,11 @@ function connectHandler(channel) {
     }
   });
 
+  channel.on('memberRemoved', function(member, members) {
+    console.log('\nremoved cluster member ' + member);
+    prompt();
+  });
+
   function prompt() {
     var p = 'Enter a message for all nodes on ' + cluster + ': ';
     rl.question(p, function(answer) {
