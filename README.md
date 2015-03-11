@@ -4,8 +4,8 @@
 
 This is experimental and under constant change. There is no point in a
 "Usage" section until things stabilize a bit more. But if you're
-interested, make sure your firewall allows UDP traffic on port 7600
-and then run the demo script in more than one terminal.
+interested, make sure your firewall allows UDP traffic on port 7600 -
+7700 and then run the demo script in more than one terminal.
 
     node demo.js
 

@@ -32,6 +32,14 @@ function connectHandler(channel) {
     prompt();
   });
 
+  channel.on('memberAdded', function(member, members) {
+    if (member !== channel.address) {
+      console.log('\nnew cluster member is ' + member);
+      channel.send(member, channel.address + ' greets you');
+      prompt();
+    }
+  });
+
   function prompt() {
     var p = 'Enter a message for all nodes on ' + cluster + ': ';
     rl.question(p, function(answer) {
