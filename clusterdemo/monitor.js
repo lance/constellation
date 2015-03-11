@@ -1,16 +1,17 @@
+var cluster = require('cluster');
+
 function Monitor() {
   if (!(this instanceof Monitor)) return new Monitor();
   this.view = [];
-  this.log = [];
+  this.messages = [];
 }
 
 Monitor.prototype.viewChanged = function(members) {
   this.view = members;
-  console.log('cluster members are: ' + members);
 };
 
 Monitor.prototype.onMessage = function(message) {
-  this.log.push(message);
+  this.messages.push(cluster.worker.id + ': ' + message);
 };
 
 module.exports = Monitor;

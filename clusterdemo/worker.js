@@ -21,13 +21,23 @@ Worker.prototype.run = function() {
   channel.connect().then(connectHandler(monitor), errorHandler);
 
   http.createServer(function(req, res) {
-    res.writeHead(200);
     res.setHeader('Content-type', 'text/plain');
+    res.writeHead(200);
+    res.write('CLUSTER ID ' + this.id().cluster + "\n");
+    res.write('PROCESS ID ' + this.id().pid + "\n");
     res.write("CLUSTER MEMBERS\n");
     res.write(monitor.view.join("\n"));
-    res.end('NODE CLUSTER ID ' + cluster.worker.id);
-  }).listen(8000);
+    res.end("\n");
+    channel.publish('REQUEST FROM ' + req);
+  }.bind(this)).listen(8000);
   this.started = true;
+};
+
+Worker.prototype.id = function() {
+  return {
+    cluster: cluster.worker.id,
+    pid: cluster.worker.process.pid
+  };
 };
 
 function connectHandler(monitor) {
@@ -36,8 +46,8 @@ function connectHandler(monitor) {
         cluster.worker.id + 
         " connected to cluster " + 
         channel.cluster);
-    channel.on('message', monitor.onMessage);
-    channel.on('viewChanged', monitor.viewChanged);
+    channel.on('message', monitor.onMessage.bind(monitor));
+    channel.on('viewChanged', monitor.viewChanged.bind(monitor));
   };
 }
 

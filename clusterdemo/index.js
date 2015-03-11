@@ -3,13 +3,14 @@ var numCPUs = require('os').cpus().length;
 var Worker = require('./worker');
 
 if (cluster.isMaster) {
+  cluster.on('online', startNode);
   for (var i = 0; i < numCPUs; i++) {
-    cluster.on('online', startNode);
     cluster.fork();
   }
   cluster.on('exit', function(node, code, signal) {
-    console.log('worker ' + node.process.pid + ' died');
+    console.log('worker ' + node.process.pid + ' died. ' + code);
   });
+  console.log('Master started');
 } else {
   new Worker();
 }
