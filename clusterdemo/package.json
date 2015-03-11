@@ -9,6 +9,6 @@
   "author": "Lance Ball <lanceball@gmail.com> (lanceball.com)",
   "license": "Apache-2.0",
   "dependencies": {
-    "aquilla": "*"
+    "aquila": "*"
   }
 }

@@ -1,7 +1,7 @@
 var http = require('http'),
     cluster = require('cluster'),
     Monitor = require('./monitor'),
-    Aquilla = require('aquilla').Cluster;
+    Aquila  = require('aquila').Cluster;
 
 var Worker = module.exports = function() {
   if (!(this instanceof Worker)) return new Worker();
@@ -15,7 +15,7 @@ var Worker = module.exports = function() {
 };
 
 Worker.prototype.run = function() {
-  var channel = Aquilla.createChannel('chatter');
+  var channel = Aquila.createChannel('chatter');
   var monitor = new Monitor();
 
   channel.connect().then(connectHandler(monitor), errorHandler);
