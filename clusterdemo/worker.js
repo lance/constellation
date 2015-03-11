@@ -53,6 +53,7 @@ function connectHandler(monitor) {
 
 function errorHandler(reason) {
   console.error('ERROR (' + cluster.worker.id + '): ' + reason.toString());
+  console.error(reason.stack);
 }
 
 
