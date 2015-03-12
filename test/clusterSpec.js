@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 var assert  = require('assert'),
-    Channel = require('../index');
+    Channel = require('../lib/channel');
 
 describe('Channel', function() {
   it('should be able to create a Channel', function() {

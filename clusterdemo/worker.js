@@ -15,7 +15,7 @@ var Worker = module.exports = function() {
 };
 
 Worker.prototype.run = function() {
-  var channel = Aquila.create('chatter');
+  var channel = Aquila.Channel.create('chatter');
   var monitor = new Monitor();
 
   channel.connect().then(connectHandler(monitor), errorHandler);

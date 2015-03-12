@@ -14,4 +14,12 @@
  * limitations under the License.
  */
 
-module.exports = require('./lib/channel');
+/**
+ * @module aquila
+ */
+
+/**
+ * The Channel
+ * @type {module:channel}
+ */
+module.exports.Channel = require('./lib/channel');
