@@ -16,9 +16,6 @@ Monitor.prototype.onViewChanged = function(members) {
 
 Monitor.prototype.onMessage = function(body, message) {
   this.messages.push(message);
-  console.log('Message from ' + message.source);
-  console.log('Received by ' + this.channel.address);
-  console.log('Body ' + body);
 };
 
 module.exports = Monitor;

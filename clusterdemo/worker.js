@@ -1,33 +1,23 @@
-var http = require('http'),
-    cluster = require('cluster'),
-    Monitor = require('./monitor'),
+var cluster = require('cluster'),
     Aquila  = require('aquila');
 
-var Worker = module.exports = function() {
+var Worker = module.exports = function(channel) {
   if (!(this instanceof Worker)) return new Worker();
-  this.started = false;
-  process.on('message', function(msg) {
-    if (msg === 'start' && !this.started) {
-      console.log("Starting worker " + cluster.worker.id);
-      this.run();
-    }
-  }.bind(this));
+  this.channel = Aquila.Channel.create(channel);
 };
 
 Worker.prototype.run = function() {
-  var channel = Aquila.Channel.create('chatter');
-  channel.connect().then(connectHandler, errorHandler);
-  this.started = true;
+
+  this.channel.connect()
+    .then(connectHandler)
+    .catch(function(e) {
+      console.error('ERROR (' + this.channel.address + '): ' + reason.toString());
+      console.error(reason.stack);
+    });
 };
 
 function connectHandler(channel) {
-  console.log("Worker " + cluster.worker.id + " connected to cluster");
+  console.log("Worker " + channel.address + " connected to cluster");
 }
 
-function errorHandler(reason) {
-  console.error('ERROR (' + cluster.worker.id + '): ' + reason.toString());
-  console.error(reason.stack);
-}
-
-
-
+module.exports = Worker;

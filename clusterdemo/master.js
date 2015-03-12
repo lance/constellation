@@ -1,31 +1,53 @@
-var http    = require('http'),
-    cluster = require('cluster'),
-    Aquila  = require('aquila'), 
-    Monitor = require('./monitor'),
-    numCPUs = require('os').cpus().length;
+var http     = require('http'),
+    cluster  = require('cluster'),
+    express  = require('express'),
+    socketio = require('socket.io'),
+    Aquila   = require('aquila'), 
+    Monitor  = require('./monitor'),
+    numCPUs  = require('os').cpus().length,
+    app      = express(),
+    server   = http.createServer(app),
+    io       = socketio(server);
 
-var Master = {};
+var Master = {
+};
 
-Master.start = function() {
-  cluster.on('online', startNode);
+Master.start = function(port, channelName) {
 
+  // create a clustered message channel, and monitor
+  // it with a simple in-memory message store
+  var channel   = Aquila.Channel.create(channelName),
+      monitor   = new Monitor(channel);
+
+  // connect to the channel
+  channel.connect().then(connectHandler).catch(errorHandler);
+
+  // start the HTTP server
+  server.listen(port, function() {
+    console.log("Master HTTP server started on port " + port);
+  });
+
+  // static routing for HTTP
+  app.use(express.static(__dirname + '/public'));
+
+  // websockets with socket.io to communicate with a browser app
+  io.on('connection', function(socket) {
+    socket.on('add client', function() {
+      socket.emit('view', monitor.view);
+    });
+    channel.on('viewChanged', function(members) {
+      socket.emit('view', monitor.view);
+    });
+  });
+
+  // log when workers go down
   cluster.on('exit', function(node, code, signal) {
     console.log('worker ' + node.process.pid + ' died. ' + code);
   });
 
+  // fork our worker processes
   for (var i = 0; i < numCPUs; i++) {
     cluster.fork();
-  }
-  startServer();
-
-  var channel   = Aquila.Channel.create('chatter'),
-      monitor   = new Monitor(channel);
-
-  channel.connect().then(connectHandler).catch(errorHandler);
-
-  function startNode(node) {
-    console.log('Starting node ' + node.process.pid);
-    node.send('start');
   }
 
   function connectHandler() {
@@ -37,16 +59,6 @@ Master.start = function() {
     console.error(reason.stack);
   }
 
-  function startServer() {
-    http.createServer(function(req, res) {
-      res.setHeader('Content-type', 'text/plain');
-      res.writeHead(200);
-      res.write("CLUSTER MEMBERS\n");
-      res.write(monitor.view.join("\n"));
-      res.end("\n");
-      channel.publish('REQUEST FROM ' + req);
-    }.bind(this)).listen(8000);
-  }
 };
 
 module.exports = Master;
