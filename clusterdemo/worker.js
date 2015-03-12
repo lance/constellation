@@ -16,39 +16,12 @@ var Worker = module.exports = function() {
 
 Worker.prototype.run = function() {
   var channel = Aquila.Channel.create('chatter');
-  var monitor = new Monitor();
-
-  channel.connect().then(connectHandler(monitor), errorHandler);
-
-  http.createServer(function(req, res) {
-    res.setHeader('Content-type', 'text/plain');
-    res.writeHead(200);
-    res.write('CLUSTER ID ' + this.id().cluster + "\n");
-    res.write('PROCESS ID ' + this.id().pid + "\n");
-    res.write("CLUSTER MEMBERS\n");
-    res.write(monitor.view.join("\n"));
-    res.end("\n");
-    channel.publish('REQUEST FROM ' + req);
-  }.bind(this)).listen(8000);
+  channel.connect().then(connectHandler, errorHandler);
   this.started = true;
 };
 
-Worker.prototype.id = function() {
-  return {
-    cluster: cluster.worker.id,
-    pid: cluster.worker.process.pid
-  };
-};
-
-function connectHandler(monitor) {
-  return function(channel) {
-    console.log("Worker " + 
-        cluster.worker.id + 
-        " connected to cluster " + 
-        channel.cluster);
-    channel.on('message', monitor.onMessage.bind(monitor));
-    channel.on('viewChanged', monitor.viewChanged.bind(monitor));
-  };
+function connectHandler(channel) {
+  console.log("Worker " + cluster.worker.id + " connected to cluster");
 }
 
 function errorHandler(reason) {
