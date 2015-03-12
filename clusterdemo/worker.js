@@ -1,7 +1,7 @@
 var http = require('http'),
     cluster = require('cluster'),
     Monitor = require('./monitor'),
-    Aquila  = require('aquila').Cluster;
+    Aquila  = require('aquila');
 
 var Worker = module.exports = function() {
   if (!(this instanceof Worker)) return new Worker();

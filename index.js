@@ -14,14 +14,4 @@
  * limitations under the License.
  */
 
-/**
- * @typedef {Array} Cluster
- * @type {Cluster}
- */
-module.exports.Cluster = require('./lib/cluster');
-
-/**
- * @typedef {Array} Channel
- * @type {Channel}
- */
-module.exports.Channel = require('./lib/channel');
+module.exports = require('./lib/channel');

@@ -3,13 +3,11 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    doxx: {
-      all: {
-        src: '.',
-        target: 'doc',
+    jsdoc : {
+      dist : {
+        src: ['index.js', 'lib/*.js'],
         options: {
-          title: 'constellation',
-          ignore: 'Gruntfile.js,node_modules,test'
+          destination: 'doc'
         }
       }
     },
@@ -35,10 +33,10 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-doxx');
+  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-gh-pages');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'mochaTest', 'doxx']);
+  grunt.registerTask('default', ['jshint', 'mochaTest', 'jsdoc']);
 
 };

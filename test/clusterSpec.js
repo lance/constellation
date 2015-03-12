@@ -14,30 +14,29 @@
  * limitations under the License.
  */
 var assert  = require('assert'),
-    Cluster = require('../lib/cluster'),
-    Channel = require('../lib/channel');
+    Channel = require('../index');
 
-describe('Cluster', function() {
+describe('Channel', function() {
   it('should be able to create a Channel', function() {
-    var channel = Cluster.createChannel('messages');
+    var channel = Channel.createChannel('messages');
     assert(channel, 'did not create a Channel');
     assert(channel instanceof Channel, 'created something not a Channel');
   });
 
   it('should only create a channel for a given name once', function() {
-    Cluster.createChannel('messages');
-    Cluster.createChannel('messages');
-    assert(Cluster.length === 1, 'Created too many channels');
+    Channel.createChannel('messages');
+    Channel.createChannel('messages');
+    assert(Channel.channels().length === 1, 'Created too many channels');
   });
 
   it('should maintain a list of channels that were created', function() {
-    var channel = Cluster.createChannel('messages'),
-        list = Cluster.channels();
+    var channel = Channel.createChannel('messages'),
+        list = Channel.channels();
     assert(list, 'did not return a channel list');
     assert(list.length === 1, 'returned an empty channel list');
     assert(list[0] === channel, 'Wrong channel returned');
-    Cluster.createChannel('other-channel');
-    assert(Cluster.channels().length === 2, 'Wrong number of channels returned');
+    Channel.createChannel('other-channel');
+    assert(Channel.channels().length === 2, 'Wrong number of channels returned');
   });
 
 });
