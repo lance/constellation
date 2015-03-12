@@ -1,4 +1,4 @@
-var Cluster = require('./lib/cluster');
+var Channel = require('./lib/channel');
 var readline = require('readline');
 
 var rl = readline.createInterface({
@@ -7,7 +7,7 @@ var rl = readline.createInterface({
 });
 
 rl.question('What cluster would you like to join? ', function(name) {
-  var channel = Cluster.createChannel(name);
+  var channel = Channel.create(name);
   channel.connect().then(connectHandler, errorHandler);
 });
 
