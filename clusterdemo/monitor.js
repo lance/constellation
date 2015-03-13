@@ -10,8 +10,11 @@ function Monitor(channel) {
 }
 
 Monitor.prototype.onViewChanged = function(members) {
-  this.view = members;
-  console.log('View changed: ' + members);
+  // Our view doesn't need to include us. If we're down,
+  // then we're not really doing any of this anyway...
+  this.view = members.filter(function(m) { 
+    return m !== this.channel.address;
+  }.bind(this));
 };
 
 Monitor.prototype.onMessage = function(body, message) {

@@ -1,6 +1,12 @@
-npm install ../
-NODE_DEBUG=cluster node index.js
+A simple application that uses Aquila to create a mesh of several nodes, then
+serves a basic HTML page showing all nodes in the cluster. On that page, you
+can start new nodes or kill existing ones and watch the list of cluster members
+update automagically in real time.
 
-TODO:
-- Allow messages from browser to all clients
-- Show messages from all clients on the browser
+
+To run the application
+
+    $ npm install ../
+    $ node
+
+Then browse to http://localhost:3000

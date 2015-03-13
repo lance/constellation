@@ -7,7 +7,22 @@
 </head>
 <body>
   <div id="view">
+    <h1>Aquila Clustering Example</h1>
+    <p>
+      The list below shows all of the nodes currently connected to the cluster.
+      There is no master/woker or master/slave relationship between any of the
+      nodes. They are all peers, and all auto-discover the state of the cluster
+      periodically. Killing a node causes all nodes to be updated with the 
+      current state of the cluster. Likewise, starting a new node does the same.
+    </p>
+
+    <p>
+      To kill a node on the cluster, click its ID. It will be killed immediately,
+      and within a few seconds, the list should update itself accordingly.
+      To add a new node to the cluster, click the button.
+    </p>
     <ul id="nodes"></ul>
+    <button type="button" id="start">Start new node</button>
   </div>
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

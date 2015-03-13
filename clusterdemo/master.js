@@ -15,7 +15,7 @@ var Master = {
 Master.start = function(port, channelName) {
 
   // create a clustered message channel, and monitor
-  // it with a simple in-memory message store
+  // it with a simple in-memory collection of nodes on the channel
   var channel   = Aquila.Channel.create(channelName),
       monitor   = new Monitor(channel);
 
@@ -34,6 +34,12 @@ Master.start = function(port, channelName) {
   io.on('connection', function(socket) {
     socket.on('add client', function() {
       socket.emit('view', monitor.view);
+    });
+    socket.on('kill node', function(node) {
+      channel.publish('suicide ' + node);
+    });
+    socket.on('start node', function(node) {
+      cluster.fork();
     });
     channel.on('viewChanged', function(members) {
       socket.emit('view', monitor.view);

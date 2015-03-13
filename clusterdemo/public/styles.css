@@ -30,10 +30,16 @@ ul {
   word-wrap: break-word;
 }
 
+li {
+  margin: 10px;
+}
+
+li.green {
+  color: #118401;
+}
+
 #view {
-  height: 100%;
-  position: absolute;
-  width: 100%;
+  margin: 20px;
 }
 
 #nodes {
