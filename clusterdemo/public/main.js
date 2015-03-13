@@ -16,15 +16,17 @@ $(function() {
   function updateView(data) {
     $('.node').remove();
     data.forEach(function(node) {
-      var $el = $('<li>').addClass('node').addClass('green').text(node);
-      $el.click(killNode(node));
+      var $el = $('<li>').addClass('node').addClass('live').text(node);
+      $el.click(killNode(node, $el));
       $nodes.append($el);
     });
   }
 
-  function killNode(node) {
+  function killNode(node, el) {
     return function() {
       if (confirm('Do you really want to kill ' + node + '?')) {
+        $(el).removeClass('live').addClass('almost-dead');
+        $(el).append(' (going down)');
         socket.emit('kill node', node);
       }
     };
