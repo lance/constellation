@@ -7,6 +7,6 @@ update automagically in real time.
 To run the application
 
     $ npm install ../
-    $ node
+    $ node .
 
 Then browse to http://localhost:3000
