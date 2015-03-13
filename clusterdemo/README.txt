@@ -6,7 +6,13 @@ update automagically in real time.
 
 To run the application
 
-    $ npm install ../
-    $ node .
+    # installs aquila from the parent dir
+    $ npm install ../ 
+
+    # installs other dependencies
+    $ npm install 
+
+    # start the app
+    $ node . 
 
 Then browse to http://localhost:3000
