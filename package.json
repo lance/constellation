@@ -1,5 +1,5 @@
 {
-  "name": "aquila",
+  "name": "@projectodd/aquila",
   "version": "0.1.0",
   "description": "A Node.js clustering thing",
   "scripts": {
@@ -11,7 +11,10 @@
     "bus",
     "messaging"
   ],
-  "author": "Lance Ball <lanceball@gmail.com> (lanceball.com)",
+  "contributors": [
+    "Lance Ball <lball@redhat.com>",
+    "Ben Browning <bbrowning@redhat.com>"
+  ],
   "license": "Apache-2.0",
   "files": [
     "index.js",
