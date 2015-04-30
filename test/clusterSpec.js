@@ -20,23 +20,14 @@ describe('Channel', function() {
   it('should be able to create a Channel', function() {
     var channel = Channel.create('messages');
     assert(channel, 'did not create a Channel');
-    assert(channel instanceof Channel, 'created something not a Channel');
+    console.log(channel);
   });
 
-  it('should only create a channel for a given name once', function() {
-    Channel.create('messages');
-    Channel.create('messages');
-    assert(Channel.channels().length === 1, 'Created too many channels');
-  });
-
-  it('should maintain a list of channels that were created', function() {
-    var channel = Channel.create('messages'),
-        list = Channel.channels();
-    assert(list, 'did not return a channel list');
-    assert(list.length === 1, 'returned an empty channel list');
-    assert(list[0] === channel, 'Wrong channel returned');
-    Channel.create('other-channel');
-    assert(Channel.channels().length === 2, 'Wrong number of channels returned');
+  describe('builder', function() {
+    it('should allow a custom protocol stack', function() {
+      var builder = Channel.builder('messages');
+      //builder.
+    });
   });
 
 });
