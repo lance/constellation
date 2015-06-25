@@ -29,9 +29,10 @@ describe('Channel', function() {
 
   it('should stop', function(done) {
     var channel = Channel.create('messages');
-
     channel.connect().then(function() {
-      channel.stop().then(done());
+      channel.stop().then(function() {
+        done();
+      });
     });
   });
 
