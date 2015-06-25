@@ -27,12 +27,10 @@ describe('Channel', function() {
     return channel.connect();
   });
 
-  it('should stop', function(done) {
+  it('should stop', function() {
     var channel = Channel.create('messages');
-    channel.connect().then(function() {
-      channel.stop().then(function() {
-        done();
-      });
+    return channel.connect().then(function() {
+      return channel.stop();
     });
   });
 
