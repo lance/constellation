@@ -20,14 +20,26 @@ describe('Channel', function() {
   it('should be able to create a Channel', function() {
     var channel = Channel.create('messages');
     assert(channel, 'did not create a Channel');
-    console.log(channel);
+  });
+
+  it('should "connect"', function() {
+    var channel = Channel.create('messages');
+    return channel.connect();
+  });
+
+  it('should stop', function(done) {
+    var channel = Channel.create('messages');
+
+    channel.connect().then(function() {
+      channel.stop().then(done());
+    });
   });
 
   describe('builder', function() {
     it('should allow a custom protocol stack', function() {
-      var builder = Channel.builder('messages');
-      //builder.
+      var builder  = Channel.builder('test-messages'),
+          channel = builder.udp().build();
+      assert(channel, 'did not create a channel');
     });
   });
-
 });

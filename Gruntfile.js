@@ -34,7 +34,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-jsdoc');
-  grunt.loadNpmTasks('grunt-gh-pages');
 
   // Default task(s).
   grunt.registerTask('default', ['jshint', 'mochaTest', 'jsdoc']);
