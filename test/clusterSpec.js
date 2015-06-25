@@ -34,6 +34,10 @@ describe('Channel', function() {
     });
   });
 
+  it('should not send messages when stopped', function() {
+    var channel = Channel.create('messages');
+  });
+
   describe('builder', function() {
     it('should allow a custom protocol stack', function() {
       var builder  = Channel.builder('test-messages'),
